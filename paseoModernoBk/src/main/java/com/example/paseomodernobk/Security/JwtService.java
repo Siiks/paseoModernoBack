@@ -1,5 +1,6 @@
 package com.example.paseomodernobk.Security;
 
+import com.example.paseomodernobk.Enum.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -42,8 +44,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateToken(UserDetails userDetails){
-        return  generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails, Role roles){
+        return generateTokenWithRoles(userDetails, roles);
     }
 
     private Claims extractAllClaims(String token){
@@ -54,7 +56,18 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    public String generateTokenWithRoles(UserDetails userDetails, Role roles) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", userDetails.getUsername());
+        claims.put("iat", new Date(System.currentTimeMillis()));
+        claims.put("exp", new Date(System.currentTimeMillis() + 1000 * 60 * 24));
+        claims.put("roles", roles);
 
+        return Jwts.builder()
+                .setClaims(claims)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
