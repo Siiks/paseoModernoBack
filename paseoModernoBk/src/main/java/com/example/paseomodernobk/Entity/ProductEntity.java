@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -35,5 +37,9 @@ public class ProductEntity {
 
     @Column(name = "inventory_quantity", nullable = false)
     private Integer inventoryQuantity;
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private List<FotoEntity> fotos = new ArrayList<>();
 }
 

@@ -7,6 +7,8 @@ import com.example.paseomodernobk.Repository.CategoryRepository;
 import com.example.paseomodernobk.Repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<ProductEntity> getAllProducts() {
-        return productRepository.findAll();
+    public Page<ProductEntity> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public ProductEntity getProductById(Long id) throws ResourceNotFoundException {
