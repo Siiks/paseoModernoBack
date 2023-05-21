@@ -1,5 +1,6 @@
 package com.example.paseomodernobk.Controller;
 
+import com.example.paseomodernobk.Dto.MessageResponse;
 import com.example.paseomodernobk.Entity.CartItemEntity;
 import com.example.paseomodernobk.Entity.Dto.CartItemDTO;
 import com.example.paseomodernobk.Service.CartItemService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/cartItems")
 public class CartItemController {
@@ -25,32 +27,25 @@ public class CartItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CartItemEntity> getCartItemById(@PathVariable("id") Long id) {
-        Optional<CartItemEntity> cartItem = cartItemService.getCartItemById(id);
-        return cartItem.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<List<CartItemEntity>> getCartItemByIdUser(@PathVariable("id") Long id) {
+        List<CartItemEntity> cartItem = cartItemService.getCartItemById(id);
+        return new ResponseEntity<>(cartItem, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CartItemEntity> createCartItem(@RequestBody CartItemDTO cartItem) {
+    public ResponseEntity<CartItemEntity> createCartItem(@RequestBody CartItemEntity cartItem) {
         CartItemEntity savedCartItem = cartItemService.saveCartItem(cartItem);
         return new ResponseEntity<>(savedCartItem, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CartItemEntity> updateCartItem(@RequestBody CartItemDTO cartItem) {
-            return new ResponseEntity<>(cartItemService.saveCartItem(cartItem), HttpStatus.OK);
+    @PutMapping("/edit")
+    public ResponseEntity<List<CartItemEntity>> updateCartItem(@RequestBody List<CartItemEntity> cartItem) {
+            return new ResponseEntity<>(cartItemService.saveModifiedItems(cartItem), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteCartItemById(@PathVariable("id") Long id) {
-        Optional<CartItemEntity> cartItem = cartItemService.getCartItemById(id);
-        if (cartItem.isPresent()) {
-            cartItemService.deleteCartItemById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<MessageResponse> deleteCartItemById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(cartItemService.deleteCartItemById(id), HttpStatus.OK);
     }
 
     @DeleteMapping

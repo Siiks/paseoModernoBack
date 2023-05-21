@@ -23,7 +23,7 @@ public class VerificationToken {
     @Column(name = "token")
     private String token;
 
-    @OneToOne(targetEntity = UserEntity.class, optional = false)
+    @OneToOne(targetEntity = UserEntity.class, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "user_id")
     private UserEntity user;
 

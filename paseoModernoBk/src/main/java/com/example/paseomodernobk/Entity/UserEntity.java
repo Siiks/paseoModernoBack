@@ -1,6 +1,9 @@
 package com.example.paseomodernobk.Entity;
 
 import com.example.paseomodernobk.Enum.Role;
+import com.example.paseomodernobk.Utils.SimpleGrantedAuthorityDeserializer;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -24,7 +28,7 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -45,10 +49,13 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    @JsonBackReference
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return Collections.emptyList();
     }
+
 
     @Override
     public String getPassword() {

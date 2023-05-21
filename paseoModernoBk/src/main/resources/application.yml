@@ -1,8 +1,8 @@
 spring:
   mail:
-    # Configuración de correo electrónico para enviar notificaciones
-    username: paseomodernosupp@gmail.com # Nombre de usuario de la cuenta de correo electrónico
-    port: '587' # Puerto de correo electrónico
+    # Configuraciï¿½n de correo electrï¿½nico para enviar notificaciones
+    username: daw09.2022@gmail.com # Nombre de usuario de la cuenta de correo electrï¿½nico
+    port: '587' # Puerto de correo electrï¿½nico
     properties:
       mail:
         smtp:
@@ -13,10 +13,10 @@ spring:
           connectiontimeout: '5000'
           writetimeout: '5000'
           timeout: '5000'
-    host: smtp.gmail.com # Servidor de correo electrónico
-    protocol: smtp # Protocolo de correo electrónico
-    password: uadzsmfgiwhwkior # Contraseña de la cuenta de correo electrónico
-    host_address: http://localhost:8080 # Dirección del servidor de la aplicación
+    host: smtp.gmail.com # Servidor de correo electrï¿½nico
+    protocol: smtp # Protocolo de correo electrï¿½nico
+    password: eoyguiokmokgwgyo # Contraseï¿½a de la cuenta de correo electrï¿½nico
+    host_address: http://localhost:8080 # Direcciï¿½n del servidor de la aplicaciï¿½n
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,25 +27,25 @@ spring:
     show-sql: 'true'
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # Controlador de la base de datos MySQL
-    password: asdf # Contraseña de la base de datos
+    password: asdf # Contraseï¿½a de la base de datos
     username: root # Nombre de usuario de la base de datos
-    url: jdbc:mysql://localhost:3306/paseomoderno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true # URL de conexión a la base de datos MySQL
+    url: jdbc:mysql://localhost:3306/paseomoderno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true # URL de conexiï¿½n a la base de datos MySQL
   servlet:
     multipart:
-      max-file-size: 10MB # Tamaño máximo permitido de un archivo subido
-      max-request-size: 10MB # Tamaño máximo permitido de una solicitud HTTP
+      max-file-size: 10MB # Tamaï¿½o mï¿½ximo permitido de un archivo subido
+      max-request-size: 10MB # Tamaï¿½o mï¿½ximo permitido de una solicitud HTTP
   mvc:
     dispatch-options-request: 'true'
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 swagger:
   contact:
-    email: daw09.2022@gmail.com # Dirección de correo electrónico del contacto de Swagger
+    email: daw09.2022@gmail.com # Direcciï¿½n de correo electrï¿½nico del contacto de Swagger
     url: .. # URL del sitio web del contacto de Swagger
     name: Adi Danut Mihalachi # Nombre del contacto de Swagger
   host:
     path: /swagger-ui/ # Ruta para acceder a la interfaz de usuario de Swagger
-    address: localhost:8080 # Dirección del servidor de la aplicación
+    address: localhost:8080 # Direcciï¿½n del servidor de la aplicaciï¿½n
   api:
-    version: v1 # Versión de la API de Swagger
-    name: Paseo Moderno Docs # Nombre de la documentación de Swagger
+    version: v1 # Versiï¿½n de la API de Swagger
+    name: Paseo Moderno Docs # Nombre de la documentaciï¿½n de Swagger

@@ -3,12 +3,15 @@ package com.example.paseomodernobk.Controller;
 import com.example.paseomodernobk.Entity.CategoryEntity;
 import com.example.paseomodernobk.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -17,8 +20,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryEntity> getAllCategories() {
-        return categoryService.getAllCategories();
+    public Page<CategoryEntity> getAllCategories(Pageable pageable) {
+        return categoryService.getAllCategories(pageable);
     }
 
     @GetMapping("/{id}")
@@ -33,7 +36,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<CategoryEntity> createCategory(@RequestBody CategoryEntity category) {
         CategoryEntity newCategory = categoryService.createCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);

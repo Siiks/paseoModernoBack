@@ -1,23 +1,23 @@
 package com.example.paseomodernobk.Service;
 
+import com.example.paseomodernobk.Dto.MessageResponse;
+import com.example.paseomodernobk.Entity.Dto.ImageData;
 import com.example.paseomodernobk.Entity.FotoEntity;
-import com.example.paseomodernobk.Entity.ProductEntity;
-import com.example.paseomodernobk.Exceptions.InvalidArgumentException;
+import com.example.paseomodernobk.Entity.ImageUploadResponse;
 import com.example.paseomodernobk.Exceptions.ResourceNotFoundException;
 import com.example.paseomodernobk.Repository.FotoRepository;
 import com.example.paseomodernobk.Repository.ProductRepository;
+import com.example.paseomodernobk.Utils.ImageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FotoStorageService {
@@ -30,35 +30,34 @@ public class FotoStorageService {
     @Autowired
     private ProductRepository productRepository;
 
-    public String almacenarArchivo(MultipartFile archivo, Long productoId) {
-        String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(archivo.getOriginalFilename()));
 
-        try {
-            if (nombreArchivo.contains("..")) {
-                throw new RuntimeException("El nombre del archivo contiene una secuencia de ruta inválida");
-            }
-            ProductEntity productEntity = productRepository.findById(productoId).orElseThrow(ResourceNotFoundException::new);
-            Path archivoPath = this.directorioFotos.resolve(nombreArchivo);
-            Files.copy(archivo.getInputStream(), archivoPath, StandardCopyOption.REPLACE_EXISTING);
+    public ImageUploadResponse uploadImage(Long productId, MultipartFile file)
+            throws IOException {
 
-            FotoEntity foto = new FotoEntity();
-            foto.setFileName(nombreArchivo);
-            foto.setProducto(productEntity);
-            this.fotoRepository.save(foto);
-
-            return nombreArchivo;
-        } catch (IOException ex) {
-            throw new RuntimeException("No se pudo almacenar el archivo " + nombreArchivo, ex);
-        }
+        fotoRepository.save(FotoEntity.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .producto(
+                        productRepository.findById(productId).orElseThrow(ResourceNotFoundException::new)
+                )
+                .image(ImageUtility.compressImage(file.getBytes())).build());
+        return (new ImageUploadResponse("Image uploaded successfully: " +
+                        file.getOriginalFilename()));
     }
 
-    public void borrarArchivo(String nombreArchivo) {
-        try {
-            Path archivoPath = this.directorioFotos.resolve(nombreArchivo).normalize();
-            Files.deleteIfExists(archivoPath);
-        } catch (IOException ex) {
-            throw new RuntimeException("No se pudo borrar el archivo " + nombreArchivo, ex);
-        }
+    public List<ImageData> viewImages(Long productId) throws IOException {
+        final List<FotoEntity> dbImage = fotoRepository.findAllByProductoId(productId);
+
+        return dbImage.stream()
+                .map(fotoEntity -> new ImageData(fotoEntity.getId(), ImageUtility.decompressImage(fotoEntity.getImage())))
+                .collect(Collectors.toList());
+    }
+
+    public MessageResponse deleteImage(Long id) {
+        fotoRepository.deleteById(id);
+        MessageResponse mensaje = new MessageResponse();
+        mensaje.setMessage("La imagen se ha borrado con exito");
+        return mensaje;
     }
 }
 

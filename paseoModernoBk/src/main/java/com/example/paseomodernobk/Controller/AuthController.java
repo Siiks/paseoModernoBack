@@ -69,4 +69,10 @@ public class AuthController {
         tokenService.validateForgotPasswordConfirm(passwordForgotConfirmDto.getToken());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/logout")
+    public ResponseEntity<String> confirmForgotPassword() {
+        authenticationService.logout();
+        return new ResponseEntity<>("Te has salido con exito", HttpStatus.OK);
+    }
 }

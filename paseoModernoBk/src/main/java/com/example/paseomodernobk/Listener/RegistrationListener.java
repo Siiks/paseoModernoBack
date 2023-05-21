@@ -32,7 +32,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
         String recipientAddress = event.getUser().getEmail();
         String subject = "\uD83D\uDFE2 Paseo Moderno - Confirmación de Registro";
-        String confirmationUrl = mailConstants.getHostAddress() + "/account/registration/validate?token=" + event.getToken();
+        String confirmationUrl = mailConstants.getHostAddress() + "/api/v1/auth/account/registration/validate?token=" + event.getToken();
         String message = "<div style='text-align: center;'>" +
                 "<p style='font-size: 16px; line-height: 1.5em; font-weight: 600;'>¡Hola!</p>" +
                 "<p style='font-size: 16px; line-height: 1.5em;'>Bienvenido/a a Paseo Moderno. Estamos muy contentos de que te hayas registrado con nosotros. " +

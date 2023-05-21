@@ -1,5 +1,5 @@
 package com.example.paseomodernobk.Entity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ProductEntity {
 
     @Id
@@ -38,8 +39,7 @@ public class ProductEntity {
     @Column(name = "inventory_quantity", nullable = false)
     private Integer inventoryQuantity;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "producto", orphanRemoval = true)
     private List<FotoEntity> fotos = new ArrayList<>();
 }
 

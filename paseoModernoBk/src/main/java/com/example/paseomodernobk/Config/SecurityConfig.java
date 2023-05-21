@@ -33,12 +33,12 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/**",
-                        "/swagger-ui/**",
+                .requestMatchers("/api/v1/auth/**","/**",
+                        "/swagger-ui/**", "/api/categories",
                         "/swagger-ui.html",
-                        "/api/products",
+                        "/api/products","/api/products/image/info/**",
                         "/v3/api-docs/**",
-                        "/api/auth/**", "/swagger-ui-custom.html" ,"/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**",
+                        "/swagger-ui-custom.html" ,"/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**",
                         "/swagger-ui/index.html","/api-docs/**")
                 .permitAll()
                 .anyRequest()
