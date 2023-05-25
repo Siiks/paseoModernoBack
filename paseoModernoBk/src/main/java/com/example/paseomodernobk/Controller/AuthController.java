@@ -10,6 +10,7 @@ import com.example.paseomodernobk.Entity.UserEntity;
 import com.example.paseomodernobk.Service.AuthenticationService;
 import com.example.paseomodernobk.Service.TokenService;
 import com.example.paseomodernobk.Service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -74,5 +75,14 @@ public class AuthController {
     public ResponseEntity<String> confirmForgotPassword() {
         authenticationService.logout();
         return new ResponseEntity<>("Te has salido con exito", HttpStatus.OK);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Boolean> protectedResource(HttpServletRequest request) {
+        if (authenticationService.isAuthenticated(request)) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
     }
 }

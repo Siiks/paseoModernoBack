@@ -1,5 +1,8 @@
 package com.example.paseomodernobk.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +13,11 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "orderEntity")
+@Table(name = "order_entity")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderEntity {
 
     @Id
@@ -26,11 +30,16 @@ public class OrderEntity {
 
     private BigDecimal total;
 
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private UserAddressEntity userAddress;
+
     private String orderStatus;
 
     @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    private Date orderDate;
 
-
+    private int orderPayed;
 }
+
 

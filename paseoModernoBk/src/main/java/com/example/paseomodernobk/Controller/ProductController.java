@@ -1,13 +1,11 @@
 package com.example.paseomodernobk.Controller;
 
-import com.example.paseomodernobk.Dto.MessageResponse;
+import com.example.paseomodernobk.Entity.Dto.MessageResponse;
 import com.example.paseomodernobk.Entity.Dto.ImageData;
-import com.example.paseomodernobk.Entity.Dto.ProductDTO;
 import com.example.paseomodernobk.Entity.ProductEntity;
 import com.example.paseomodernobk.Exceptions.ResourceNotFoundException;
 import com.example.paseomodernobk.Service.FotoStorageService;
 import com.example.paseomodernobk.Service.ProductService;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +47,7 @@ public class ProductController {
     }
 
     @PostMapping("add")
-    public ProductEntity createProduct(@RequestBody ProductDTO product) {
+    public ProductEntity createProduct(@RequestBody ProductEntity product) {
         return productService.createProduct(product);
     }
 

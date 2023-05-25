@@ -24,6 +24,7 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
 
+
     @GetMapping()
     public Page<UserEntity> getAllUsers(Pageable pageable) {
         return userService.getAllUsers(pageable);

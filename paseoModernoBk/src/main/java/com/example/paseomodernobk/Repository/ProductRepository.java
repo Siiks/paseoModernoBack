@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     @Query("SELECT P FROM ProductEntity P " +
             "WHERE (:idCategory IS NULL OR P.category.id = :idCategory) " +
             "AND (:nombre IS NULL OR P.name LIKE CONCAT('%', :nombre, '%')) " +
-            "AND (:descripcion IS NULL OR P.description LIKE CONCAT('%', :nombre, '%'))")
+            "AND (:nombre IS NULL OR P.description LIKE CONCAT('%', :nombre, '%'))")
     Page<ProductEntity> findAllByParams(@Param("idCategory") Long idCategory,
                                         @Param("nombre") String nombre,
                                         Pageable pageable);

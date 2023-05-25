@@ -1,4 +1,8 @@
 spring:
+  stripe:
+    key:
+      public: pk_test_51NBKmBENB0HVFsJp1dXcwdMqlzBdU5atZzvNH2eSb2LNl6ngkQp0eyN79jQUTSFSdBKmYKHHpc1MJ9ab6Rbz1p2m00AuCHL6G3
+      private: sk_test_51NBKmBENB0HVFsJpH8UcXE9KquUPPLbFhEv5j8M8elIpC4mKJUjLeOrGkzP9K4cWSCi2t9KJYVaLT75ainAhecrk00vYZwbFkS
   mail:
     # Configuraci�n de correo electr�nico para enviar notificaciones
     username: daw09.2022@gmail.com # Nombre de usuario de la cuenta de correo electr�nico
@@ -49,3 +53,4 @@ swagger:
   api:
     version: v1 # Versi�n de la API de Swagger
     name: Paseo Moderno Docs # Nombre de la documentaci�n de Swagger
+

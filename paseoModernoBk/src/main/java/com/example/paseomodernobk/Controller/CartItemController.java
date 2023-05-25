@@ -1,8 +1,7 @@
 package com.example.paseomodernobk.Controller;
 
-import com.example.paseomodernobk.Dto.MessageResponse;
+import com.example.paseomodernobk.Entity.Dto.MessageResponse;
 import com.example.paseomodernobk.Entity.CartItemEntity;
-import com.example.paseomodernobk.Entity.Dto.CartItemDTO;
 import com.example.paseomodernobk.Service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -48,10 +46,10 @@ public class CartItemController {
         return new ResponseEntity<>(cartItemService.deleteCartItemById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllCartItems() {
-        cartItemService.deleteAllCartItems();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> deleteAllCartItemsById(@PathVariable("id") Long id) {
+        cartItemService.deleteAllCartItemsById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

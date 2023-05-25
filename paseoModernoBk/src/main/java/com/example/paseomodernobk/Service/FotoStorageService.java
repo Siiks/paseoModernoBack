@@ -1,6 +1,6 @@
 package com.example.paseomodernobk.Service;
 
-import com.example.paseomodernobk.Dto.MessageResponse;
+import com.example.paseomodernobk.Entity.Dto.MessageResponse;
 import com.example.paseomodernobk.Entity.Dto.ImageData;
 import com.example.paseomodernobk.Entity.FotoEntity;
 import com.example.paseomodernobk.Entity.ImageUploadResponse;
@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

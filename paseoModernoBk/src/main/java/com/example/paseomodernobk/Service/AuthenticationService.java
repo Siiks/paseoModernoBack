@@ -7,6 +7,7 @@ import com.example.paseomodernobk.Entity.UserEntity;
 import com.example.paseomodernobk.Enum.Role;
 import com.example.paseomodernobk.Repository.UserRepository;
 import com.example.paseomodernobk.Security.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,9 @@ public class AuthenticationService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = UserEntity.builder()
@@ -85,4 +91,30 @@ public class AuthenticationService {
         return "Hubo un problema al salirte";
     }
 
+    public boolean isAuthenticated(HttpServletRequest request) {
+        String token = extractTokenFromRequest(request);
+
+        if (token != null) {
+            String username = jwtService.extractUsername(token);
+
+            // Obtener los detalles del usuario desde el proveedor de autenticación de Spring Security
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (userDetails != null && jwtService.isTokenValid(token, userDetails)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
 }

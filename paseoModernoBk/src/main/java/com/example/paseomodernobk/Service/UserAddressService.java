@@ -29,8 +29,8 @@ public class UserAddressService {
         return userAddressRepository.save(existingUserAddress);
     }
 
-    public List<UserAddressEntity> getAllUserAddresses() {
-        return userAddressRepository.findAll();
+    public List<UserAddressEntity> getAllUserAddresses(Long id) {
+        return userAddressRepository.findAllByUserId(id);
     }
 
     public UserAddressEntity getUserAddressById(Long id) {

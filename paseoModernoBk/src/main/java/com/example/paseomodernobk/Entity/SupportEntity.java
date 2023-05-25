@@ -1,30 +1,24 @@
 package com.example.paseomodernobk.Entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "order_item")
-public class OrderItemEntity {
+public class SupportEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
+    private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "product")
-    private ProductEntity product;
+    private String email;
 
+    @Column(length = 4000)
+    private String mensaje;
 }
-

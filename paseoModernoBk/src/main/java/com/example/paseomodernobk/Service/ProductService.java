@@ -1,13 +1,11 @@
 package com.example.paseomodernobk.Service;
 
-import com.example.paseomodernobk.Entity.Dto.ProductDTO;
 import com.example.paseomodernobk.Entity.FotoEntity;
 import com.example.paseomodernobk.Entity.ProductEntity;
 import com.example.paseomodernobk.Exceptions.ResourceNotFoundException;
-import com.example.paseomodernobk.Repository.CategoryRepository;
+import com.example.paseomodernobk.Repository.CartItemRepository;
 import com.example.paseomodernobk.Repository.ProductRepository;
 import com.example.paseomodernobk.Utils.ImageUtility;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,12 +19,6 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public Page<ProductEntity> getAllProductsFiltered(Long idCategoria, String nombre, Pageable pageable) {
         Page<ProductEntity> page = productRepository.findAllByParams(idCategoria, nombre, pageable);
@@ -50,17 +42,18 @@ public class ProductService {
         return page;
     }
 
-
-
     public ProductEntity getProductById(Long id) throws ResourceNotFoundException {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found for this id :: " + id));
+        ProductEntity product = productRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        if (!product.getFotos().isEmpty()){
+            product.getFotos().forEach(foto -> {
+                foto.setImage(ImageUtility.decompressImage(foto.getImage()));
+            });
+        }
+        return product;
     }
 
-    public ProductEntity createProduct(ProductDTO product) {
-        ProductEntity productEntity = modelMapper.map(product, ProductEntity.class);
-        productEntity.setCategory(categoryRepository.findById(product.getIdCategory()).get());
-        return productRepository.save(productEntity);
+    public ProductEntity createProduct(ProductEntity product) {
+        return productRepository.save(product);
     }
 
     public ProductEntity updateProduct(ProductEntity product) throws ResourceNotFoundException {

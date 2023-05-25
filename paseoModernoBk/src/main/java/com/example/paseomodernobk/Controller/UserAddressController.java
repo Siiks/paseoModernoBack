@@ -22,15 +22,15 @@ public class UserAddressController {
         return new ResponseEntity<>(createdUserAddress, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserAddressEntity> getUserAddressById(@PathVariable Long id) {
-        UserAddressEntity userAddress = userAddressService.getUserAddressById(id);
+    @GetMapping("/address/{id}")
+    public ResponseEntity<List<UserAddressEntity>> getUserAddressById(@PathVariable Long id) {
+        List<UserAddressEntity> userAddress = userAddressService.getAllUserAddresses(id);
         return new ResponseEntity<>(userAddress, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserAddressEntity>> getAllUserAddresses() {
-        List<UserAddressEntity> userAddresses = userAddressService.getAllUserAddresses();
+    @GetMapping("{id}")
+    public ResponseEntity<UserAddressEntity> getAllUserAddresses(@PathVariable Long id) {
+        UserAddressEntity userAddresses = userAddressService.getUserAddressById(id);
         return new ResponseEntity<>(userAddresses, HttpStatus.OK);
     }
 

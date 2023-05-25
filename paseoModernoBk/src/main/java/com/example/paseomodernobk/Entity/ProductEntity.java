@@ -41,5 +41,6 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "producto", orphanRemoval = true)
     private List<FotoEntity> fotos = new ArrayList<>();
+
 }
 

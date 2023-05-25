@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orderItems")
+@RequestMapping("/api/orderItems")
 public class OrderItemController {
 
     @Autowired
@@ -22,22 +22,18 @@ public class OrderItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItemEntity> getOrderItemById(@PathVariable Long id) {
-        OrderItemEntity orderItem = orderItemService.getOrderItemById(id);
+    public ResponseEntity<List<OrderItemEntity>> getOrderItemByIdUser(@PathVariable Long id) {
+        List<OrderItemEntity> orderItem = orderItemService.getOrderItemById(id);
         return ResponseEntity.ok(orderItem);
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemEntity> createOrderItem(@RequestBody OrderItemEntity orderItem) {
-        OrderItemEntity newOrderItem = orderItemService.createOrderItem(orderItem);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newOrderItem);
+    public ResponseEntity<List<OrderItemEntity>> createOrderItem(@RequestBody List<OrderItemEntity> orderItems) {
+        List<OrderItemEntity> newOrderItems = orderItemService.createOrderItem(orderItems);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newOrderItems);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderItemEntity> updateOrderItem(@PathVariable Long id, @RequestBody OrderItemEntity orderItem) {
-        OrderItemEntity updatedOrderItem = orderItemService.updateOrderItem(id, orderItem);
-        return ResponseEntity.ok(updatedOrderItem);
-    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {

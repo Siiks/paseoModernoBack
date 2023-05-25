@@ -1,12 +1,7 @@
 package com.example.paseomodernobk.Service;
 
-import com.example.paseomodernobk.Dto.MessageResponse;
+import com.example.paseomodernobk.Entity.Dto.MessageResponse;
 import com.example.paseomodernobk.Entity.CartItemEntity;
-import com.example.paseomodernobk.Entity.Dto.CartItemDTO;
-import com.example.paseomodernobk.Entity.Dto.OrderItemDTO;
-import com.example.paseomodernobk.Entity.OrderEntity;
-import com.example.paseomodernobk.Entity.OrderItemEntity;
-import com.example.paseomodernobk.Entity.UserEntity;
 import com.example.paseomodernobk.Repository.CartItemRepository;
 import com.example.paseomodernobk.Repository.ProductRepository;
 import com.example.paseomodernobk.Repository.UserRepository;
@@ -14,12 +9,8 @@ import com.example.paseomodernobk.Utils.ImageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,5 +66,12 @@ public class CartItemService {
         cartItemRepository.deleteAll();
     }
 
+
+    public void deleteAllCartItemsById(Long id) {
+        List<CartItemEntity> items = getCartItemById(id);
+        items.forEach(item  ->{
+            cartItemRepository.delete(item);
+        });
+    }
 }
 

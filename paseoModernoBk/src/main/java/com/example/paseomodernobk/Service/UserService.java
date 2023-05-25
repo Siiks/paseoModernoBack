@@ -1,7 +1,9 @@
 package com.example.paseomodernobk.Service;
 
 import com.example.paseomodernobk.Entity.UserEntity;
+import com.example.paseomodernobk.Repository.CartItemRepository;
 import com.example.paseomodernobk.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UserService {
     private UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     public Page<UserEntity> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -67,7 +72,9 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
+        cartItemRepository.deleteAll(cartItemRepository.findAllByUserId(id));
         userRepository.deleteById(id);
     }
 }
